@@ -34,7 +34,7 @@
 			{:else}
 			<button onclick={() => logout()}>Log out</button>
 			<a href={`/user/${userState.user.uid}`}>Profile</a>
-			<a href={`/user/${userState.user.uid}`}>My account</a>
+			<a href={`/account/`}>My account</a>
 			{/if}
 		</div>
 		

@@ -31,8 +31,6 @@ export function getFirebase() {
 export function onAuth(callback: any) {
     const { auth } = getFirebase();
     return onAuthStateChanged(auth, user => {
-        if(user != null)
-            console.log(user);
         callback(user);
     })
 }

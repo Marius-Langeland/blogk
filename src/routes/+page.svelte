@@ -2,6 +2,8 @@
     import { login } from "$lib/firebase.client";
     import type { User } from "firebase/auth";
     import { getContext, onMount } from "svelte";
+    import Dragger from "$lib/components/dragger.svelte";
+    import CodeBlock from "$lib/components/code-block.svelte";
 
     let userState: {user: User} = getContext('userState');
     let count = $state(0);
@@ -22,6 +24,7 @@
         {/if}
         <button>Browse <br> collections</button>
     </div>
+    <Dragger><CodeBlock data={{title: "", content: ""}}/></Dragger>
 </section>
 
 <style>
