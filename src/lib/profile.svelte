@@ -22,12 +22,12 @@
 
 <div class="profile">
     {#if profileIcon == userState.user.photoURL}
-        <button class="material-icons opener"><img src={profileIcon} alt=""></button>
+        <button class="material-icons hover-opener"><img src={profileIcon} alt=""></button>
     {:else}
-        <button class="material-icons opener">{profileIcon}</button>
+        <button class="material-icons hover-opener">{profileIcon}</button>
     {/if}
 
-    <div class="content">
+    <div class="hover-content">
         <div class="setIcons">
             <button onclick={() => profileIcon = userState.user.photoURL}><img class="profile-pic" src={userState.user.photoURL} alt=""></button>
             {#each icons as icon, i}
@@ -97,7 +97,7 @@
         }
     }
 
-    .content{
+    .hover-content{
         display: flex;
         flex-direction: column;
         position: relative;

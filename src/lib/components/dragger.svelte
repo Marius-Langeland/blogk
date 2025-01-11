@@ -1,5 +1,5 @@
 <script lang="ts">
-    let { children } = $props();
+    let { children, title = '' } = $props();
 
     let lock = $state(false);
     let hide = $state(false);
@@ -8,8 +8,11 @@
 
 <div class={className}>
     <div class="toolbar">
-        <button class="material-icons">lock</button>
-        <button class="material-icons">close</button>
+        <span>{title}</span>
+        <div>
+            <button class="material-icons">lock</button>
+            <button class="material-icons">close</button>
+        </div>
     </div>
     {@render children?.()}
 </div>
@@ -19,24 +22,38 @@
         display: flex;
         flex-direction: column;
 
-        padding: 2px;
-        gap: 2px;
+        padding: 3px;
+        gap: 3px;
         background-color: var(--clr_transparent_dark_25);
-        border-radius: .5rem;
+        border-radius: .5rem .5rem .1rem .5rem;
         overflow: hidden;
+
+        backdrop-filter: blur(10px);
     }
     .toolbar{
         display: flex;
-        justify-content: end;
+        justify-content: space-between;
         align-items: center;
 
         border-radius: .4rem .4rem 0 0;
 
-        background-color: var(--clr_transparent_dark_25);
-        padding: .25rem;
-        gap: .25rem;
+        background-color: var(--clr_palette_0);
+        padding: .1rem;
+        padding-left: 1ch;
     }
-    .toolbar > *{
+    .toolbar > * {
+        display: flex;
+        gap: 2px;
+    }
+    .material-icons{
         font-size: 20px;
+    }
+
+    button{
+        padding: .2rem;
+        border-radius: .25rem;
+        &:hover{
+            background-color: var(--clr_transparent_light_25);
+        }
     }
 </style>

@@ -24,7 +24,9 @@
         {/if}
         <button>Browse <br> collections</button>
     </div>
-    <Dragger><CodeBlock data={{title: "", content: ""}}/></Dragger>
+    <Dragger title="Code block">
+        <CodeBlock outerStyle={false}/>
+    </Dragger>
 </section>
 
 <style>
