@@ -170,8 +170,8 @@
                 align-items: center;
                 background-color: var(--clr_palette_0);
                 color: var(--clr_transparent_light_50);
-                width: 50%;
-                aspect-ratio: 1;
+                width: 60px;
+                height: 60px;
                 border-radius: 50%;
             }
         }
