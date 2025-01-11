@@ -1,15 +1,10 @@
 <script lang="ts">
+    import { logout } from "./firebase.client";
+    import ProfileIcon from "./components/profile-icon.svelte";
     import { type User } from "firebase/auth";
     import { getContext } from "svelte";
-    import { logout } from "./firebase.client";
 
-    let profileIcon: string | null = $state(localStorage.getItem('profile-icon'));
-
-    $effect(() => {
-        localStorage.setItem('profile-icon', profileIcon ?? 'face');
-    });
-
-    let userState: {user: User} = getContext('userState');
+    let icon = $state(localStorage.getItem('profile-icon'));
 
     let icons = [
         "face",
@@ -18,20 +13,18 @@
         "face_4",
         "face_2",
     ]
+
+    let userState: {user: User} = getContext('userState');
 </script>
 
 <div class="profile">
-    {#if profileIcon == userState.user.photoURL}
-        <button class="material-icons hover-opener"><img src={profileIcon} alt=""></button>
-    {:else}
-        <button class="material-icons hover-opener">{profileIcon}</button>
-    {/if}
+    <ProfileIcon icon={icon} size="40px"/>
 
     <div class="hover-content">
         <div class="setIcons">
-            <button onclick={() => profileIcon = userState.user.photoURL}><img class="profile-pic" src={userState.user.photoURL} alt=""></button>
-            {#each icons as icon, i}
-                <button class="material-icons" onclick={() => profileIcon = icons[i]}>{icon}</button>
+            <button onclick={() => icon = userState.user.photoURL}><img class="profile-pic" src={userState.user.photoURL} alt=""></button>
+            {#each icons as iconElement, i}
+                <button class="material-icons" onclick={() => icon = icons[i]}>{iconElement}</button>
             {/each}
         </div>
         

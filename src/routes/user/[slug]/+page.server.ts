@@ -16,6 +16,7 @@ export const load: PageServerLoad = async ({ params }) => {
     });
 
     return {
+        username: params.slug,
         submissions: submissions,
     }
 };

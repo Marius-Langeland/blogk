@@ -25,17 +25,11 @@
         <button>Browse <br> collections</button>
     </div>
     <Dragger title="Code block">
-        <CodeBlock outerStyle={false}/>
+        <CodeBlock outerStyle={false} field=''/>
     </Dragger>
 </section>
 
 <style>
-    img{
-        width: 700px;
-        margin-top: -200px;
-        pointer-events: none;
-    }
-
     .hero{
         width: 100%;
         min-height: 100vh;
@@ -48,13 +42,6 @@
     .grid{
         display: grid;
         gap: .5rem;
-    }
-
-    h1{
-        font-family: "Playwrite AU SA", serif;
-        color: var(--clr_palette_4);
-        font-size: 4rem;
-        user-select: none;
     }
 
     a{all: unset; user-select: none; cursor: pointer;}

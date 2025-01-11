@@ -18,7 +18,7 @@
 
 <div class="main">
     <div class="content">
-        <ProfileWide/>
+        <ProfileWide username={data.username}/>
     </div>
 </div>
 
@@ -31,9 +31,14 @@
     }
 
     .content{
-        background-color: blue;
+        background-color: var(--clr_transparent_dark_25);
+        border-radius: .5rem;
+        overflow: hidden;
         z-index: 1;
         min-width: 500px;
         min-height: 200px;
+
+        display: flex;
+        flex-direction: column;
     }
 </style>
