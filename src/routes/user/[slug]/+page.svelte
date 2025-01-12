@@ -1,17 +1,16 @@
 <script lang="ts">
     import { getFirebase } from "$lib/firebase.client.js";
-    import { collection, doc, setDoc } from "firebase/firestore";
+    import { collection, doc, setDoc, getDocs, type QuerySnapshot } from "firebase/firestore";
     import { onMount } from "svelte";
     import ProfileWide from "$lib/component-wide/profile-wide.svelte";
     
     let db = getFirebase().firestore;
-    const subRef = collection(db, 'submissions');
-
-    onMount(async () => {
-        await setDoc(doc(subRef, "Test"), {
-            title: "Test submission",
-        });
-    })
+    const subRef = collection(db, 'collections');
+    let myDocs: QuerySnapshot | null = $state(null);
+    
+    let refresh = async () => {
+        myDocs = await getDocs(subRef);
+    }
 
     let { data } = $props();
 </script>
@@ -24,26 +23,23 @@
             <button>My public collections</button>
             <button>My private collections</button>
         </div>
+    </div>
 
+    <div class="content">
         <div class="collection">
             <div class="tags">
-                <h3 class="title">Untitled collection</h3>
-                <span class="privacy">private</span>
+                <h3 class="title">Leetcode submissions</h3>
+                <span class="privacy">public</span>
             </div>
-
-            <div class="carousell">
-                <button class="go-left">&lt</button>
-                <ul>
-                    <li></li>
-                    <li>Submission</li>
-                    <li>Submission</li>
-                    <li>Submission</li>
-                    <li>Submission</li>
-                    <li>Submission</li>
-                    <li>Submission</li>
-                    <li>Submission</li>
-                </ul>
-                <button class="go-right">&gt</button>
+            <div class="grid">
+                <div class="tools">
+                    <button>Open collection</button>
+                    <button>Add new submission</button>
+                </div>
+                <div>submission</div>
+                <div>submission</div>
+                <div>submission</div>
+                <div>submission</div>
             </div>
         </div>
     </div>
@@ -53,6 +49,8 @@
     .main{
         min-height: 100vh;
         display: flex;
+        flex-direction: column;
+        gap: .5rem;
         justify-content: center;
         align-items: center;
     }
@@ -76,7 +74,7 @@
         display: flex;
         align-items: center;
         gap: .2rem;
-        &>*:not(.title){
+        &>*:not(.title, button){
             background-color: var(--clr_palette_3);
             border-radius: 5rem;
             padding: .1rem .5rem;
@@ -109,6 +107,7 @@
         display: flex;
         gap: 3px;
         flex-direction: column;
+        
         &>*{
             background-color: var(--clr_transparent_dark_25);
         }
@@ -119,60 +118,39 @@
             padding: .5rem;
         }
 
-        .carousell{
-            display: flex;
+        .grid{
+            display: grid;
             padding: .5rem;
-        }
-
-        button{
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: var(--clr_transparent_light_50);
-            width: 50px;
-            background-color: var(--clr_transparent_dark_25);
-        }
-
-        .go-left{border-radius: .5rem 0 0 .5rem;}
-        .go-right{border-radius: 0 .5rem .5rem 0;}
-
-        ul{
-            display: flex;
-            flex-direction: row;
-            padding: 0;
             margin: 0;
-            gap: 1rem;
-            overflow-x: scroll;
+            gap: .5rem;
+            
+            grid-template-columns: 1fr 1fr;
+            
+            &>*:not(.tools){
+                all: unset;
+                padding: .5rem;
+                border: 2px solid var(--clr_palette_0);
+                background-color: var(--clr_transparent_dark_25);
+                border-radius: .25rem;
+                color: var(--clr_transparent_light_50);
+                aspect-ratio: 3/1;
 
-            position: relative;
+                cursor: pointer;
+                user-select: none;
+            }
         }
 
-        li{
-            all: unset;
-            padding: .5rem;
-            height: 120px;
-            aspect-ratio: 5/4;
-            background-color: var(--clr_palette_3);
-            border-radius: .25rem;
-            color: var(--clr_transparent_light_50);
-        }
-
-        li:first-of-type{
+        .tools{
             display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 50px;
+            grid-column: 1 / -1;
+            gap: 3px;
 
-            &::before{
-                content: '+';
-                display: flex;
-                justify-content: center;
-                align-items: center;
+            &>*{
+                padding: .5rem;
                 background-color: var(--clr_palette_0);
                 color: var(--clr_transparent_light_50);
-                width: 60px;
-                height: 60px;
-                border-radius: 50%;
+                cursor: pointer;
+                border-radius: .25rem;
             }
         }
     }
