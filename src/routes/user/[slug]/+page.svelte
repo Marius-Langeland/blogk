@@ -16,30 +16,32 @@
 </script>
 
 <div class="main">
-    <div class="content">
-        <ProfileWide username={data.username}/>
-        <div class="filters">
-            <button>My collections</button>
-            <button>My public collections</button>
-            <button>My private collections</button>
-        </div>
-    </div>
-
-    <div class="content">
-        <div class="collection">
-            <div class="tags">
-                <h3 class="title">Leetcode submissions</h3>
-                <span class="privacy">public</span>
+    <div class="flex">
+        <div class="content">
+            <ProfileWide username={data.username}/>
+            <div class="filters">
+                <button>My collections</button>
+                <button>My public collections</button>
+                <button>My private collections</button>
+                <button>New collection</button>
             </div>
-            <div class="grid">
-                <div class="tools">
-                    <button>Open collection</button>
-                    <button>Add new submission</button>
+        </div>
+        <div class="content">
+            <div class="collection">
+                <div class="tags">
+                    <h3 class="title">Leetcode submissions</h3>
+                    <span class="privacy">public</span>
                 </div>
-                <div>submission</div>
-                <div>submission</div>
-                <div>submission</div>
-                <div>submission</div>
+                <div class="grid">
+                    <div class="tools">
+                        <button>Open collection</button>
+                        <button>Add new submission</button>
+                    </div>
+                    <div>submission</div>
+                    <div>submission</div>
+                    <div>submission</div>
+                    <div>submission</div>
+                </div>
             </div>
         </div>
     </div>
@@ -48,23 +50,23 @@
 <style>
     .main{
         min-height: 100vh;
+        gap: .5rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .flex{
         display: flex;
         flex-direction: column;
         gap: .5rem;
-        justify-content: center;
-        align-items: center;
     }
 
     .content{
         background-color: var(--clr_transparent_dark_25);
         border-radius: .5rem;
-        overflow: hidden;
-        z-index: 1;
-        min-width: 500px;
-        max-width: 800px;
-
         gap: 3px;
-
         display: flex;
         flex-direction: column;
         backdrop-filter: blur(5px);
