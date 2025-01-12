@@ -1,16 +1,26 @@
 <script lang="ts">
     import { getFirebase } from "$lib/firebase.client.js";
-    import { collection, doc, setDoc, getDocs, type QuerySnapshot } from "firebase/firestore";
+    import { collection, doc, setDoc, where, limit, getDocs, query, orderBy } from "firebase/firestore";
     import { onMount } from "svelte";
     import ProfileWide from "$lib/component-wide/profile-wide.svelte";
     import CollectionOverview from "$lib/components/collection-overview.svelte";
     
     let db = getFirebase().firestore;
-    const subRef = collection(db, 'collections');
-    let myDocs: QuerySnapshot | null = $state(null);
-    
-    let refresh = async () => {
-        myDocs = await getDocs(subRef);
+    let col = collection(db, 'submissions');
+    const queryAll = query(col, limit(10));
+    const queryPrivate = query(col, where('private', '==', true), limit(10));
+    const queryPublic = query(col, where('private', '==', false), limit(10));
+
+    let refresh = async (privacy: string) => {
+        let query;
+        switch(privacy){
+            case 'all': query = queryAll;
+            case 'public': query = queryPublic; 
+            case 'private': query = queryPrivate; 
+            default: query = queryPublic;
+        }
+
+        let myDocs = await getDocs(query);
     }
 
     let { data } = $props();
@@ -55,7 +65,8 @@
         gap: 3px;
         display: flex;
         flex-direction: column;
-        backdrop-filter: blur(5px);
+        backdrop-filter: blur(50px);
+        overflow: hidden;
     }
 
     

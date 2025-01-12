@@ -14,6 +14,10 @@
             <button>Open collection</button>
             <button>Add new submission</button>
         </div>
+        <div>submission</div>
+        <div>submission</div>
+        <div>submission</div>
+
         {#each submissions as sub}
             <div>sub.title</div>
         {/each}
@@ -57,16 +61,15 @@
             margin: 0;
             gap: .5rem;
             
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1fr 1fr 1fr;
             
             &>*:not(.tools){
-                all: unset;
                 padding: .5rem;
                 border: 2px solid var(--clr_palette_0);
-                background-color: var(--clr_transparent_dark_25);
+                background: linear-gradient(150deg, var(--clr_transparent_dark_75), var(--clr_transparent_dark_25));
                 border-radius: .25rem;
                 color: var(--clr_transparent_light_50);
-                aspect-ratio: 3/1;
+                aspect-ratio: 3/2;
 
                 cursor: pointer;
                 user-select: none;
