@@ -10,10 +10,13 @@
     let db = fb.firestore;
     let auth = fb.auth;
 
+    let { data } = $props();
+
     let col = collection(db, 'submissions');
-    const queryAll = query(col, orderBy('timeCreated'));
-    const queryPrivate = query(col, where('isPrivate', '==', true), orderBy('timeCreated'));
-    const queryPublic = query(col, where('isPrivate', '==', false), orderBy('timeCreated'));
+    
+    const queryAll = query(col, where('author', '==', auth.currentUser?.uid ?? data.uid), orderBy('timeCreated'));
+    const queryPrivate = query(col, where('isPrivate', '==', true), where('author', '==', auth.currentUser?.uid ?? data.uid), orderBy('timeCreated'));
+    const queryPublic = query(col, where('isPrivate', '==', false), where('author', '==', data.uid), orderBy('timeCreated'));
 
     let refresh = async (privacy: string) => {
         let query;
@@ -62,12 +65,10 @@
     }
 
     onMount(() => {
-        refresh('all');
+        refresh(isThisUser ? 'all' : 'public');
     });
 
-    let { data } = $props();
-
-    let refreshing = $state(false);
+    let isThisUser: boolean = $state(data.uid == auth.currentUser?.uid);
     let dataMap: Submission[][] = $state([]);
     let awaitingCreation = $state(false);
     let isPrivate = $state(true);
@@ -77,25 +78,29 @@
 <div class="main">
     <div class="flex">
         <div class="content profile">
-            <ProfileWide username={data.username}/>
-            <div class="filters">
-                <button onclick={() => refresh('all')}>My submissions</button>
-                <button onclick={() => refresh('public')}>My public submissions</button>
-                <button onclick={() => refresh('private')}>My private submissions</button>
-            </div>
-        </div>
-
-        <div class="content create-collection">
-            <input type="text" bind:value={collectionName} maxlength="24" name="collection-name" id="collection-name" placeholder="Collection name">
-            <button onclick={() => isPrivate = !isPrivate} class="is-private">
-                {isPrivate ? 'Private' : 'Public'}
-            </button>
-            {#if awaitingCreation}
-                <span>Creating...</span>
-            {:else}
-                <button onclick={() => addCollection(collectionName, isPrivate)}>Create new collection</button>
+            <ProfileWide username={data.uid}/>
+            {#if isThisUser}
+                <div class="filters">
+                    <button onclick={() => refresh('all')}>My submissions</button>
+                    <button onclick={() => refresh('public')}>My public submissions</button>
+                    <button onclick={() => refresh('private')}>My private submissions</button>
+                </div>
             {/if}
         </div>
+
+        {#if isThisUser}
+            <div class="content create-collection">
+                <input type="text" bind:value={collectionName} maxlength="24" name="collection-name" id="collection-name" placeholder="Collection name">
+                <button onclick={() => isPrivate = !isPrivate} class="is-private">
+                    {isPrivate ? 'Private' : 'Public'}
+                </button>
+                {#if awaitingCreation}
+                <span>Creating...</span>
+                {:else}
+                <button onclick={() => addCollection(collectionName, isPrivate)}>Create new collection</button>
+                {/if}
+            </div>
+        {/if}
 
         <div class="content collections">
             {#each dataMap as collection}

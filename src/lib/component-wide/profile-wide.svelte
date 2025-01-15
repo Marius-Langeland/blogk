@@ -5,7 +5,7 @@
 
 <div class="profile">
     <div class="icon">
-        <ProfileIcon icon={localStorage.getItem('profile-icon')} size="50px"/>
+        <ProfileIcon icon={'url'} size="50px"/>
     </div>
     <div class="name">{username}</div>
 </div>
