@@ -14,8 +14,14 @@
     let userState: {user: User} = getContext('userState');
 </script>
 
-{#if profileIcon == userState.user.photoURL}
-    <button class="material-icons hover-opener"><img width={size} src={profileIcon} alt=""></button>
+{#if profileIcon == 'url'}
+    <button class="material-icons hover-opener"><img width={size} src={userState.user.photoURL} alt=""></button>
 {:else}
     <button class="material-icons hover-opener" style={`font-size: ${size};`}>{profileIcon}</button>
 {/if}
+
+<style>
+    img{
+        border-radius: 50%;
+    }
+</style>

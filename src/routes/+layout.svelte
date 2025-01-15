@@ -1,7 +1,7 @@
 <script lang="ts">
 	let { children } = $props();
 	import { login, logout, onAuth } from '$lib/firebase.client';
-	import { getContext, onMount, setContext } from 'svelte';
+	import { setContext } from 'svelte';
 	import type { User } from 'firebase/auth';
 
 	let userState: {user: User | null} = $state({user: null});
@@ -15,7 +15,6 @@
 	import LoginForm from '$lib/login-form.svelte';'$lib/login-form'
 	import ThemePicker from '$lib/theme-picker.svelte';
     import Profile from '$lib/profile.svelte';
-    import EditMode from '$lib/edit-mode.svelte';
 </script>
 
 <main>

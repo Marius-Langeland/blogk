@@ -22,7 +22,7 @@
 
     <div class="hover-content">
         <div class="setIcons">
-            <button onclick={() => icon = userState.user.photoURL}><img class="profile-pic" src={userState.user.photoURL} alt=""></button>
+            <button onclick={() => icon = 'url'}><img class="profile-pic" src={userState.user.photoURL} alt=""></button>
             {#each icons as iconElement, i}
                 <button class="material-icons" onclick={() => icon = icons[i]}>{iconElement}</button>
             {/each}

@@ -1,6 +1,6 @@
 <script lang="ts">
     import { getFirebase } from "$lib/firebase.client.js";
-    import { collection, doc, setDoc, where, limit, getDocs, query, orderBy, addDoc } from "firebase/firestore";
+    import { collection, where, limit, getDocs, query, orderBy, addDoc } from "firebase/firestore";
     import { onMount } from "svelte";
     import ProfileWide from "$lib/component-wide/profile-wide.svelte";
     import CollectionOverview from "$lib/components/collection-overview.svelte";
@@ -29,7 +29,7 @@
         let myDocs = await getDocs(query);
         myDocs.docs.forEach((snapshot) => {
             let data = submissionConverter.fromFirestore(snapshot);
-            
+
             if(map.has(data.group))
                 map.get(data.group)?.push(data);
             else map.set(data.group, [data]);
