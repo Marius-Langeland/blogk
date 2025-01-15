@@ -11,20 +11,37 @@
     let auth = fb.auth;
 
     let col = collection(db, 'submissions');
-    const queryAll = query(col, limit(10));
-    const queryPrivate = query(col, where('private', '==', true), limit(10));
-    const queryPublic = query(col, where('private', '==', false), limit(10));
+    const queryAll = query(col, limit(30), orderBy('timeCreated'));
+    const queryPrivate = query(col, where('isPrivate', '==', true), orderBy('timeCreated'), limit(30));
+    const queryPublic = query(col, where('isPrivate', '==', false), orderBy('timeCreated'), limit(30));
 
     let refresh = async (privacy: string) => {
         let query;
         switch(privacy){
-            case 'all': query = queryAll;
-            case 'public': query = queryPublic; 
-            case 'private': query = queryPrivate; 
-            default: query = queryPublic;
+            case 'all': query = queryAll; break;
+            case 'public': query = queryPublic; break;
+            case 'private': query = queryPrivate; break;
+            default: query = queryPublic; break;
         }
 
+        let map: Map<string, Submission[]> = new Map();
+        let array: Submission[][] = [];
         let myDocs = await getDocs(query);
+        myDocs.docs.forEach((snapshot) => {
+            let data = submissionConverter.fromFirestore(snapshot);
+            
+            if(map.has(data.group))
+                map.get(data.group)?.push(data);
+            else map.set(data.group, [data]);
+        });
+
+        map.keys().forEach(key => {
+            let d = map.get(key);
+            if(d != undefined)
+            array.push(d);
+        });
+
+        dataMap = array;
     }
 
     let addCollection = async (collectionName: string, isPrivate: boolean) => {
@@ -34,16 +51,24 @@
         if(collectionName.length <= 0)
             collectionName = 'Untitled collection';
 
-        let newCollection: Submission = new Submission([], isPrivate);
+        let newCollection: Submission = new Submission('New submission', collectionName, [], isPrivate);
 
         awaitingCreation = true;
-        let response = await addDoc(collection(col, auth.currentUser?.uid, collectionName), submissionConverter.toFirestore(newCollection));
+        let response = await addDoc(col, submissionConverter.toFirestore(newCollection));
         awaitingCreation = false;
         collectionName = '';
+
+        refresh('all');
     }
+
+    onMount(() => {
+        refresh('all');
+    });
 
     let { data } = $props();
 
+    let refreshing = $state(false);
+    let dataMap: Submission[][] = $state([]);
     let awaitingCreation = $state(false);
     let isPrivate = $state(true);
     let collectionName = $state('');
@@ -54,9 +79,9 @@
         <div class="content profile">
             <ProfileWide username={data.username}/>
             <div class="filters">
-                <button>My collections</button>
-                <button>My public collections</button>
-                <button>My private collections</button>
+                <button onclick={() => refresh('all')}>My submissions</button>
+                <button onclick={() => refresh('public')}>My public submissions</button>
+                <button onclick={() => refresh('private')}>My private submissions</button>
             </div>
         </div>
 
@@ -72,8 +97,10 @@
             {/if}
         </div>
 
-        <div class="content">
-            <CollectionOverview/>
+        <div class="content collections">
+            {#each dataMap as collection}
+                <CollectionOverview title={collection[0].group} submissions={collection}/>
+            {/each}
         </div>
     </div>
 </div>
@@ -113,6 +140,10 @@
             padding: .5rem;
             background-color: var(--clr_transparent_dark_25);
             color: var(--clr_transparent_light_50);
+            transition: color .2s ease;
+            &:hover{
+                color: var(--clr_transparent_light_75);
+            }
         }
 
         #collection-name{
@@ -145,5 +176,9 @@
                 color: var(--clr_transparent_light_75);
             }
         }
+    }
+
+    .collections{
+        flex-direction: column-reverse;
     }
 </style>
