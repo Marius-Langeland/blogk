@@ -51,7 +51,7 @@
         if(collectionName.length <= 0)
             collectionName = 'Untitled collection';
 
-        let newCollection: Submission = new Submission('New submission', collectionName, [], isPrivate);
+        let newCollection: Submission = new Submission('New submission', collectionName, [], isPrivate, auth.currentUser.uid);
 
         awaitingCreation = true;
         let response = await addDoc(col, submissionConverter.toFirestore(newCollection));
