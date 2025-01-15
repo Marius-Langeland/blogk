@@ -11,9 +11,9 @@
     let auth = fb.auth;
 
     let col = collection(db, 'submissions');
-    const queryAll = query(col, limit(30), orderBy('timeCreated'));
-    const queryPrivate = query(col, where('isPrivate', '==', true), orderBy('timeCreated'), limit(30));
-    const queryPublic = query(col, where('isPrivate', '==', false), orderBy('timeCreated'), limit(30));
+    const queryAll = query(col, orderBy('timeCreated'));
+    const queryPrivate = query(col, where('isPrivate', '==', true), orderBy('timeCreated'));
+    const queryPublic = query(col, where('isPrivate', '==', false), orderBy('timeCreated'));
 
     let refresh = async (privacy: string) => {
         let query;

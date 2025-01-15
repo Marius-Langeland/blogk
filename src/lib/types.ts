@@ -6,12 +6,14 @@ export class Submission{
     group: string;
     isPrivate: boolean;
     timeCreated: FieldValue;
-    constructor (name: string, group: string, blocks: Block[], isPrivate: boolean, timeCreated = serverTimestamp()) {
+    author: string;
+    constructor (name: string, group: string, blocks: Block[], isPrivate: boolean, author: string, timeCreated = serverTimestamp()) {
         this.blocks = blocks;
         this.isPrivate = isPrivate;
         this.timeCreated = timeCreated;
         this.name = name;
         this.group = group;
+        this.author = author;
     }
 }
 
@@ -23,11 +25,12 @@ export const submissionConverter = {
             blocks: sub.blocks,
             isPrivate: sub.isPrivate,
             timeCreated: sub.timeCreated,
+            author: sub.author,
         };
     },
     fromFirestore: (snapshot: QueryDocumentSnapshot, options: SnapshotOptions = {}) => {
         const data = snapshot.data(options);
-        return new Submission(data.name, data.group, data.blocks, data.isPrivate, data.timeCreated);
+        return new Submission(data.name, data.group, data.blocks, data.isPrivate, data.timeCreated, data.author);
     },
 }
 
