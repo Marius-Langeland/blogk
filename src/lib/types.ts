@@ -1,6 +1,6 @@
 import { FieldValue, QueryDocumentSnapshot, serverTimestamp, type SnapshotOptions } from "firebase/firestore";
 
-export class Submission{
+export class Submission {
     blocks: Block[];
     name: string;
     group: string;
@@ -14,6 +14,15 @@ export class Submission{
         this.name = name;
         this.group = group;
         this.author = author;
+    }
+}
+
+export class Block {
+    type: string;
+    data: {};
+    constructor () {
+        this.type = '';
+        this.data = {};
     }
 }
 
@@ -34,11 +43,31 @@ export const submissionConverter = {
     },
 }
 
-export class Block{
-    type: string;
-    data: {};
-    constructor () {
-        this.type = '';
-        this.data = {};
+export class UserData {
+    isPrivate: boolean;
+    uid: string;
+    displayName: string;
+    profileIcon: string;
+
+    constructor(privacy: boolean, uid: string, name: string, icon: string) {
+        this.isPrivate = privacy;
+        this.uid = uid;
+        this.displayName = name;
+        this.profileIcon = icon;
     }
+}
+
+export const userDataConverter = {
+    toFirestore: (user : UserData) => {
+        return {
+            name: user.displayName,
+            isPrivate: user.isPrivate,
+            uid: user.uid,
+            profileIcon: user.profileIcon,
+        };
+    },
+    fromFirestore: (snapshot: QueryDocumentSnapshot, options: SnapshotOptions = {}) => {
+        const data = snapshot.data(options);
+        return new UserData(data.isPrivate, data.uid, data.name, data.profileIcon);
+    },
 }
