@@ -78,7 +78,7 @@
 <div class="main">
     <div class="flex">
         <div class="content profile">
-            <ProfileWide username={data.uid}/>
+            <ProfileWide uid={data.uid}/>
             {#if isThisUser}
                 <div class="filters">
                     <button onclick={() => refresh('all')}>My submissions</button>

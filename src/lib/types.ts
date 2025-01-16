@@ -1,4 +1,4 @@
-import { FieldValue, QueryDocumentSnapshot, serverTimestamp, type SnapshotOptions } from "firebase/firestore";
+import { FieldValue, QueryDocumentSnapshot, serverTimestamp, type DocumentData, type SnapshotOptions } from "firebase/firestore";
 
 export class Submission {
     blocks: Block[];
@@ -68,6 +68,9 @@ export const userDataConverter = {
     },
     fromFirestore: (snapshot: QueryDocumentSnapshot, options: SnapshotOptions = {}) => {
         const data = snapshot.data(options);
+        return new UserData(data.isPrivate, data.uid, data.name, data.profileIcon);
+    },
+    fromFirestoreData: (data: DocumentData) => {
         return new UserData(data.isPrivate, data.uid, data.name, data.profileIcon);
     },
 }

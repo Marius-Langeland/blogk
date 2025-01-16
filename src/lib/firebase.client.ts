@@ -1,7 +1,8 @@
 import { PUBLIC_FIREBASE_CONFIG } from "$env/static/public";
 import { getApps, initializeApp, type FirebaseApp } from "firebase/app";
 import { getAuth, connectAuthEmulator, onAuthStateChanged, GoogleAuthProvider, signInWithPopup, type Auth } from "firebase/auth";
-import { connectFirestoreEmulator, getFirestore, type Firestore } from "firebase/firestore";
+import { collection, connectFirestoreEmulator, doc, getFirestore, setDoc, type Firestore } from "firebase/firestore";
+import { userDataConverter, type UserData } from "./types";
 
 function initializeServices() {
     const config = JSON.parse(PUBLIC_FIREBASE_CONFIG);
@@ -43,7 +44,6 @@ export const login = async () => {
     provider.addScope('email');
     try{
         let cred = await signInWithPopup(getFirebase().auth, provider);
-        console.log(cred);
     }
     catch(error){
         console.log(error);
@@ -53,4 +53,11 @@ export const login = async () => {
 export const logout = () => {
     const firebase = getFirebase();
     firebase.auth.signOut();
+}
+
+export const SetUserData = (user: UserData, auth: Auth, db: Firestore) => {
+    if(auth.currentUser != null && auth.currentUser.uid == user.uid) {
+        let document = collection(db, 'users');
+        return setDoc(doc(document, auth.currentUser.uid), userDataConverter.toFirestore(user));
+    }
 }

@@ -1,20 +1,28 @@
 <script lang="ts">
 	let { children } = $props();
-	import { login, logout, onAuth } from '$lib/firebase.client';
+	import { getFirebase, login, logout, onAuth, SetUserData } from '$lib/firebase.client';
 	import { setContext } from 'svelte';
 	import type { User } from 'firebase/auth';
 
-	let userState: {user: User | null} = $state({user: null});
+	let app = getFirebase();
+
+	let userState: {user: User | null} = $state({user: app.auth.currentUser});
 	setContext('userState', userState);
 
 	onAuth((callback: any) => {
 		userState.user = callback;
+
+		if(userState.user != null){
+			let userData = new UserData(false, userState.user.uid, userState.user.displayName ?? '', userState.user.photoURL ?? 'face');
+			SetUserData(userData, app.auth, app.firestore)
+		}
 	})
 
     import '$lib/hoverable.css'
 	import LoginForm from '$lib/login-form.svelte';'$lib/login-form'
 	import ThemePicker from '$lib/theme-picker.svelte';
     import Profile from '$lib/profile.svelte';
+    import { UserData, userDataConverter } from '$lib/types';
 </script>
 
 <main>
