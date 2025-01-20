@@ -116,7 +116,7 @@
         display: flex;
         flex-direction: column;
         justify-content: center;
-        align-items: center;
+        width: min(60vw, 1000px);
     }
 
     .flex{

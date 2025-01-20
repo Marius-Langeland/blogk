@@ -145,8 +145,9 @@
 
 	.toolbar{
 		position: fixed;
-		top: 50%;
-		translate: 0 -50%;
+		z-index: 5;
+		bottom: 50%;
+		translate: 0 50%;
 		right: 0;
 
 		display: flex;
@@ -160,5 +161,12 @@
 
 	:global(.toolbar *, .toolbar .material-symbols-outlined) {
 		color: var(--clr_palette_4);
+	}
+
+	@media screen and (max-width: 600px){
+		.toolbar{
+			bottom: 0px;
+			translate: unset;
+		}
 	}
 </style>

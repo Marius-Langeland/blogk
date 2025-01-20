@@ -19,7 +19,7 @@
 
         display: grid;
 
-        grid-template-columns: minmax(100px, 1fr) auto minmax(100px, 1fr);
+        grid-template-columns: minmax(20px, 1fr) auto minmax(20px, 1fr);
         grid-template-rows: minmax(200px, 1fr) auto minmax(150px, 1fr);
 
         grid-template-areas: 

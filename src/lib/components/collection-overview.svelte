@@ -53,7 +53,7 @@
             margin: 0;
             gap: .5rem;
             
-            grid-template-columns: 1fr 1fr 1fr;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr) );
             
             &>*:not(.tools){
                 padding: .5rem;
