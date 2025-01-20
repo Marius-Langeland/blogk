@@ -7,13 +7,15 @@ export class Submission {
     isPrivate: boolean;
     timeCreated: FieldValue;
     author: string;
-    constructor (name: string, group: string, blocks: Block[], isPrivate: boolean, author: string, timeCreated = serverTimestamp()) {
+    slug: string;
+    constructor (name: string, group: string, blocks: Block[], isPrivate: boolean, author: string, timeCreated = serverTimestamp(), slug: string = '') {
         this.blocks = blocks;
         this.isPrivate = isPrivate;
         this.timeCreated = timeCreated;
         this.name = name;
         this.group = group;
         this.author = author;
+        this.slug = slug;
     }
 }
 
@@ -39,7 +41,7 @@ export const submissionConverter = {
     },
     fromFirestore: (snapshot: QueryDocumentSnapshot, options: SnapshotOptions = {}) => {
         const data = snapshot.data(options);
-        return new Submission(data.name, data.group, data.blocks, data.isPrivate, data.timeCreated, data.author);
+        return new Submission(data.name, data.group, data.blocks, data.isPrivate, data.timeCreated, data.author, snapshot.id);
     },
 }
 

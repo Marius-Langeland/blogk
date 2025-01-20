@@ -1,5 +1,7 @@
 <script lang="ts">
-    let { title = '', submissions = [] } = $props();
+    import type { Submission } from "$lib/types";
+
+    let { title = '', submissions = [] }: {title: string, submissions: Submission[]} = $props();
 </script>
 
 <div class="collection">
@@ -10,7 +12,7 @@
     </div>
     <div class="grid">
         {#each submissions as sub}
-            <div>{sub.title}</div>
+            <a href={`/submissions/${sub.slug}`}>{sub.name}</a>
         {/each}
     </div>
 </div>
