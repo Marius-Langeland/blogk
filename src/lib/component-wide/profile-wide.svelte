@@ -21,7 +21,7 @@
 
 <div class="profile">
     <div class="icon">
-        <ProfileIcon icon={'url'} size="50px"/>
+        <ProfileIcon icon={user?.profileIcon ?? 'face'} size="50px"/>
     </div>
     <div class="name">{user?.displayName}</div>
 </div>
@@ -39,6 +39,7 @@
         background-color: var(--clr_palette_0);
         border-radius: 50%;
         padding: .5rem;
+        color: var(--clr_palette_4);
     }
     .name{
         color: var(--clr_palette_4);

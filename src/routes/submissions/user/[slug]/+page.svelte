@@ -112,7 +112,6 @@
 
 <style>
     .main{
-        min-height: 100vh;
         gap: .5rem;
         display: flex;
         flex-direction: column;

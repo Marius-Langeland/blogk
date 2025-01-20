@@ -40,7 +40,7 @@
 			<button onclick={() => login()}>login</button>
 			{:else}
 			<button onclick={() => logout()}>Log out</button>
-			<a href={`/user/${userState.user.uid}`}>Profile</a>
+			<a href={`/submissions/user/${userState.user.uid}`}>Profile</a>
 			<a href={`/account/`}>My account</a>
 			{/if}
 		</div>
@@ -144,7 +144,7 @@
 	}
 
 	.toolbar{
-		position: absolute;
+		position: fixed;
 		top: 50%;
 		translate: 0 -50%;
 		right: 0;
